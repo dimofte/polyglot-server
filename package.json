@@ -1,17 +1,21 @@
 {
-  "name": "genuine-lite",
+  "name": "express-vm",
   "version": "0.0.1",
-  "description": "Express.js minimal boilerplate",
+  "description": "A virtual machine to run arbitrary code",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp"
   },
   "author": "codeKonami",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "eslint": "^4.18.2",
     "express": "^4.14.0"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
     "gulp": "^3.9.1",
     "gulp-develop-server": "^0.5.2",
     "gulp-livereload": "^3.8.1"
