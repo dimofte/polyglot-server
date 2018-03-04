@@ -1,0 +1,30 @@
+# OS-specific
+.DS_Store
+
+# Python
+*.pyc
+
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+node_modules
+.vagrant
+npm-debug.log
+npm-debug.log.*
+
+.sass-cache
+
+local-config.js
+
+process.json
+.idea
