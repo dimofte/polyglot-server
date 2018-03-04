@@ -17,8 +17,12 @@ const appRouter = async app => {
       res.status(200).send(JSON.stringify(result));
     } catch (err) {
       const { message } = err;
-      consoleError(message);
-      res.status(400).send(`${err.name}:  ${message}`);
+
+      // consoleError(message);
+      res.status(400).send(`${err.name}:  ${
+        // remove the file name from the error message
+        message.replace(/File \"output\/[0-9]+.py\",/g, '')
+      }`);
     }
   });
 };

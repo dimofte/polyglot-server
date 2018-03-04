@@ -17,11 +17,9 @@ async function runPythonCode(code) {
 
   try {
     const result = await runPythonScriptAsync(fileName);
-    console.log({ result });
     await unlinkAsync(fileName);
     return result;
   } catch (err) {
-    console.error(err);
     await unlinkAsync(fileName);
     throw err;
   }
