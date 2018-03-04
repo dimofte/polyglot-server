@@ -4,7 +4,7 @@
   "description": "A virtual machine to run arbitrary code",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --watch --exit \"tests/**/*.spec.js\"",
     "start": "gulp server"
   },
   "author": "codeKonami",
@@ -17,8 +17,11 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-develop-server": "^0.5.2",
-    "gulp-livereload": "^3.8.1"
+    "gulp-livereload": "^3.8.1",
+    "mocha": "^5.0.1"
   }
 }
