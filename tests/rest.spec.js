@@ -114,4 +114,18 @@ describe('POST js', () => {
         done();
       });
   });
+
+  it('it should not provide access to node modules', done => {
+    const payload = 'const fs = require(\'fs\')'; // fs would be quite dangerous :)
+    chaiServer
+      .post(path)
+      .set('content-type', 'text/plain')
+      .send(payload)
+      .end((err, res) => {
+        expect(err).not.to.be.null;
+        expect(res).to.have.status(400);
+        expect(isExecutionError(res.text)).to.be.true;
+        done();
+      });
+  });
 });
