@@ -2131,6 +2131,10 @@ pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
 
+python-shell@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/python-shell/-/python-shell-0.5.0.tgz#461983bafd092010bc2760c365b13e7d50aab231"
+
 qs@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-5.2.0.tgz#a9f31142af468cb72b25b30136ba2456834916be"
@@ -2745,10 +2749,6 @@ vinyl@^0.5.0:
     clone "^1.0.0"
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
-
-vm2@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.5.2.tgz#6ae7c75a867775946e1d4a66623374e0245150e0"
 
 websocket-driver@>=0.3.6:
   version "0.7.0"
