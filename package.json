@@ -4,7 +4,8 @@
   "description": "A virtual machine to run arbitrary code",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --watch --exit \"tests/**/*.spec.js\"",
+    "test": "mocha --exit \"tests/**/*.spec.js\"",
+    "test:watch": "yarn test --watch",
     "start": "gulp server"
   },
   "author": "codeKonami",
