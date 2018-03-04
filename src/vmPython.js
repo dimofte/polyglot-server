@@ -1,25 +1,30 @@
-const {VM, VMScript} = require('vm2');
-const { CompilationError, ExecutionError } = require('./errorTypes');
+const PythonShell = require('python-shell');
+const { promisify } = require('util');
+const { writeFile, existsSync, mkdirSync, unlink } = require('fs');
 
-function runNodeJS(code) {
-  let script;
-  let result;
-  try {
-    script = new VMScript(code).compile();
-  } catch (err) {
-    // TODO: error types
-    throw new CompilationError(err.message);
-  }
+const runPythonScriptAsync = promisify(PythonShell.run);
+const writeFileAsync = promisify(writeFile);
+const unlinkAsync = promisify(unlink);
 
-  const vm = new VM({ timeout: 1500 });
-
-  try {
-    result = vm.run(script);
-  } catch (err) {
-    throw new ExecutionError(err.message);
-  }
-  return result;
+const OUTPUT_DIR = './output';
+if (!existsSync(OUTPUT_DIR)) {
+  mkdirSync(OUTPUT_DIR);
 }
 
+async function runPythonCode(code) {
+  const fileName = `${OUTPUT_DIR}/${Math.floor(Math.random() * 99999999)}.py`;
+  await writeFileAsync(fileName, code, 'utf8');
 
-module.exports = runNodeJS;
+  try {
+    const result = await runPythonScriptAsync(fileName);
+    console.log({ result });
+    await unlinkAsync(fileName);
+    return result;
+  } catch (err) {
+    console.error(err);
+    await unlinkAsync(fileName);
+    throw err;
+  }
+}
+
+module.exports = runPythonCode;

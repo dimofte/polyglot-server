@@ -28,3 +28,5 @@ local-config.js
 
 process.json
 .idea
+
+/output

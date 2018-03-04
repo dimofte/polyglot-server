@@ -1,19 +1,18 @@
 const runPython = require('./vmPython');
 const { consoleLog, consoleError } = require('./log');
 
-const appRouter = app => {
+const appRouter = async app => {
   app.get('/', (req, res) => {
-    // TODO
     res.status(200).send(`
-    Welcome to our JS virtual machine. Try to POST on /python a text like ... 
+    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 9; nine + 1' 
     `);
   });
 
-  app.post('/python', (req, res) => {
+  app.post('/python', async (req, res) => {
     const code = req.body;
     consoleLog('Received request:\n', `${code}`);
     try {
-      const result = runPython(code);
+      const result = await runPython(code);
       consoleLog('Result:', result);
       res.status(200).send(JSON.stringify(result));
     } catch (err) {
