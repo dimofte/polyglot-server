@@ -1,16 +1,35 @@
-## Ultra simple Express boilerplate with Gulp
+# Simple virtual machine for javascript
 
-This is a simple project I use when I need to do some experiment on some js or css.
-
-Gulp gives the livereload super quick power.
-
-### To install
-
+## Installation
 ```bash
-git clone https://github.com/MadeOnMars/Express-boilerplate.git myApp
-cd myApp
-npm install
-npm install --global gulp
-gulp
+yarn
+```
+You can of course use `npm` (`npm i`)
+
+## Usage
+### Development server
+```bash
+yarn start
 # The project is available at http://localhost:3000
 ```
+This starts a `gulp` development server which _hot-reloads the code_ :rocket:
+
+The server ([`src/main.js`](./src/main.js)) is an express instance.
+
+### Making requests
+Requests are made via `POST` to `/js` (in the case of the development server: http://localhost:3000/js).
+
+The request body must be plain test. The result is also plain text, a stringified JSON.
+
+For example, if the request body is:  
+```javascript
+const x = 1;
+x + 10
+```
+the response body will be:
+`'11'`
+
+Currently, the code execution is time-boxed to 1.5 seconds. 
+
+### Request payloads and responses
+See the [tests](./tests/rest.spec.js)
