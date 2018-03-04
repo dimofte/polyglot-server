@@ -11,7 +11,7 @@ function runNodeJS(code) {
     throw new CompilationError(err.message);
   }
 
-  const vm = new VM({ timeout: 5000 });
+  const vm = new VM({ timeout: 1500 });
 
   try {
     result = vm.run(script);
