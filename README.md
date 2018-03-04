@@ -36,9 +36,8 @@ the response body will be:
 
 For more details, see the [tests](./tests/rest.spec.js)
 
-## Security concerns (!!!)
+## Security concerns :warning:
 
-:warning: :warning: :warning:
 At the current iteration, the script executer has access to all resources of the user
 that runs the node server :birthday:
 
