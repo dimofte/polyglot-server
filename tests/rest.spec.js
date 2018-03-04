@@ -52,7 +52,7 @@ while x < 5:
   it('it should report "not defined" errors', done => {
     // ExecutionError:  foo is not defined
     const payload = 'foo()';
-    const errorMessage = 'NameError: name \'foo\' is not defined';
+    const errorMessage = "NameError: name 'foo' is not defined";
     chaiServer
       .post(path)
       .set('content-type', 'text/plain')
@@ -67,7 +67,7 @@ while x < 5:
 
   it('it should report syntax errors', done => {
     const payload = '^$%^';
-    const errorMessage =  'SyntaxError: invalid syntax';
+    const errorMessage = 'SyntaxError: invalid syntax';
     chaiServer
       .post(path)
       .set('content-type', 'text/plain')
@@ -83,24 +83,24 @@ while x < 5:
 
   // TODO: timebox script, cut access to filesystem etc
 
-//   it('it should not provide write access to the filesystem', done => {
-//     const payload = `
-// file = open("testfile.txt", "w")
-// file.write("This is a test")
-// file.close()
-// file = open("testfile.txt", "r")
-// print(file.read())
-//     `;
-//     chaiServer
-//       .post(path)
-//       .set('content-type', 'text/plain')
-//       .send(payload)
-//       .end((err, res) => {
-//         expect(err).not.to.be.null;
-//         expect(res).to.have.status(400);
-//         console.log(res.text );
-//         // expect(res.text.includes(errorMessage)).to.be.true;
-//         done();
-//       });
-//   });
+  //   it('it should not provide write access to the filesystem', done => {
+  //     const payload = `
+  // file = open("testfile.txt", "w")
+  // file.write("This is a test")
+  // file.close()
+  // file = open("testfile.txt", "r")
+  // print(file.read())
+  //     `;
+  //     chaiServer
+  //       .post(path)
+  //       .set('content-type', 'text/plain')
+  //       .send(payload)
+  //       .end((err, res) => {
+  //         expect(err).not.to.be.null;
+  //         expect(res).to.have.status(400);
+  //         console.log(res.text );
+  //         // expect(res.text.includes(errorMessage)).to.be.true;
+  //         done();
+  //       });
+  //   });
 });

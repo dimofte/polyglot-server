@@ -22,15 +22,24 @@ http://localhost:3000/python).
 
 The request body must be plain test. The result is also plain text, a stringified JSON.
 
+The returned result is whatever was printed, each `print` call generating an element in an array. 
 For example, if the request body is:  
 ```
-const x = 1;
-x + 10
+x = 1
+while x < 5:
+    print(x)
+    x = x + 1
 ```
 the response body will be:
-`'11'`
+`'["1","2","3","4"]'`
 
-Currently, the code execution is time-boxed to 1.5 seconds. 
 
-### Request payloads and responses
-See the [tests](./tests/rest.spec.js)
+For more details, see the [tests](./tests/rest.spec.js)
+
+## Security concerns (!!!)
+
+:warning: :warning: :warning:
+At the current iteration, the script executer has access to all resources of the user
+that runs the node server :birthday:
+
+*So use with caution!!!* 
