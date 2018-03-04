@@ -1,4 +1,4 @@
-# Simple virtual machine for javascript
+# Simple virtual machine for python
 
 ## Installation
 ```bash
@@ -17,12 +17,13 @@ This starts a `gulp` development server which _hot-reloads the code_ :rocket:
 The server ([`src/main.js`](./src/main.js)) is an express instance.
 
 ### Making requests
-Requests are made via `POST` to `/js` (in the case of the development server: http://localhost:3000/js).
+Requests are made via `POST` to `/python` (in the case of the development server:
+http://localhost:3000/python).
 
 The request body must be plain test. The result is also plain text, a stringified JSON.
 
 For example, if the request body is:  
-```javascript
+```
 const x = 1;
 x + 10
 ```

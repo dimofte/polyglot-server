@@ -1,23 +1,24 @@
-const runNodeJs = require('./vmNode');
-const { consoleLog, consoleError } = require('./log')
+const runPython = require('./vmPython');
+const { consoleLog, consoleError } = require('./log');
 
 const appRouter = app => {
   app.get('/', (req, res) => {
+    // TODO
     res.status(200).send(`
-    Welcome to our JS virtual machine. Try to POST on /js a text like "Math.random()" 
+    Welcome to our JS virtual machine. Try to POST on /python a text like ... 
     `);
   });
 
-  app.post('/js', (req, res) => {
+  app.post('/python', (req, res) => {
     const code = req.body;
-    consoleLog('Received JS request:\n', `${code}`);
+    consoleLog('Received request:\n', `${code}`);
     try {
-      const result = runNodeJs(code);
+      const result = runPython(code);
       consoleLog('Result:', result);
       res.status(200).send(JSON.stringify(result));
     } catch (err) {
       const { message } = err;
-      consoleError(message)
+      consoleError(message);
       res.status(400).send(`${err.name}:  ${message}`);
     }
   });
