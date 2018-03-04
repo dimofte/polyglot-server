@@ -1,4 +1,5 @@
 const {VM, VMScript} = require('vm2');
+const { CompilationError, ExecutionError } = require('./errorTypes');
 
 function runNodeJS(code) {
   let script;
@@ -7,7 +8,7 @@ function runNodeJS(code) {
     script = new VMScript(code).compile();
   } catch (err) {
     // TODO: error types
-    throw new Error(`Compilation error: ${err.message}`);
+    throw new CompilationError(err.message);
   }
 
   const vm = new VM({ timeout: 5000 });
@@ -15,7 +16,7 @@ function runNodeJS(code) {
   try {
     result = vm.run(script);
   } catch (err) {
-    throw new Error(`Execution error: ${err.message}`);
+    throw new ExecutionError(err.message);
   }
   return result;
 }
