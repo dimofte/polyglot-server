@@ -25,7 +25,7 @@ gulp.task('server', ['server:start'], function() {
 });
 
 gulp.task('server:start', function() {
-  server.listen({ path: './src/app.js' }, function(err) {
+  server.listen({ path: './src/main.js' }, function(err) {
     if (err) {
       return;
     }

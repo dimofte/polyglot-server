@@ -1,4 +1,5 @@
 const runNodeJs = require('./vmNode');
+const { consoleLog, consoleError } = require('./log')
 
 const appRouter = app => {
   app.get('/', (req, res) => {
@@ -9,14 +10,15 @@ const appRouter = app => {
 
   app.post('/js', (req, res) => {
     const code = req.body;
-    console.log('Received JS request:\n', `${code}`);
+    consoleLog('Received JS request:\n', `${code}`);
     try {
       const result = runNodeJs(code);
-      console.log('Result:', result);
-      res.status(200).send({ result });
+      consoleLog('Result:', result);
+      res.status(200).send(JSON.stringify(result));
     } catch (err) {
       const { message } = err;
-      res.status(400).send({ error: `${err.name}:  ${message}` });
+      consoleError(message)
+      res.status(400).send(`${err.name}:  ${message}`);
     }
   });
 };
