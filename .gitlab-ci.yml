@@ -1,0 +1,23 @@
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:8
+
+before_script:
+  - yarn
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+    - node_modules/
+
+#test:lint:
+#  script:
+#    - npm run lint
+
+test:node:8:
+  script:
+#    - npm install -g codecov
+#    - npm run build
+#    - npm test && codecov
+    - yarn test
