@@ -36,6 +36,9 @@ the response body will be:
 
 For more details, see the [tests](./tests/rest.spec.js)
 
+## Tests
+`yarn test` or `yarn test:watch`
+
 ## Security concerns :warning:
 
 At the current iteration, the script executer has access to all resources of the user
