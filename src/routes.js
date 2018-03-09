@@ -1,10 +1,10 @@
-const runPython = require('./vmPython');
-const { consoleLog, consoleError } = require('./log');
+const { runPythonCode } = require('./pythonVM');
+const { consoleLog } = require('./log');
 
 const appRouter = async app => {
   app.get('/', (req, res) => {
     res.status(200).send(`
-    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 9; nine + 1' 
+    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 9; nine + 1'
     `);
   });
 
@@ -12,7 +12,7 @@ const appRouter = async app => {
     const code = req.body;
     consoleLog('Received request:\n', `${code}`);
     try {
-      const result = await runPython(code);
+      const result = await runPythonCode(code);
       consoleLog('Result:', result);
       res.status(200).send(JSON.stringify(result));
     } catch (err) {
@@ -21,7 +21,7 @@ const appRouter = async app => {
       // consoleError(message);
       res.status(400).send(`${err.name}:  ${
         // remove the file name from the error message
-        message.replace(/File \"output\/[0-9]+.py\",/g, '')
+        message.replace('File "<stdin>",', '')
       }`);
     }
   });
