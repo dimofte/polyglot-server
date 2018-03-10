@@ -15,11 +15,11 @@ const isSyntaxError = msg => msg.includes('SyntaxError: invalid syntax');
 describe('POST python', () => {
   // beforeEach(done => done());
   let chaiServer;
-  before(async() => {
+  before(async () => {
     const expressServer = await startServer();
     chaiServer = await chai.request(expressServer);
   });
-  after(async() => stopServer());
+  after(async () => stopServer());
 
   it('it should error for requests without body', done => {
     chaiServer.post(path).end((err, res) => {

@@ -31,9 +31,6 @@
     "no-var": 2,                     // http://eslint.org/docs/rules/no-var
     "prefer-const": 2,               // http://eslint.org/docs/rules/prefer-const
 
-    /**
-     * Variables
-     */
     "no-shadow": 2,                  // http://eslint.org/docs/rules/no-shadow
     "no-shadow-restricted-names": 2, // http://eslint.org/docs/rules/no-shadow-restricted-names
     "no-undef": 2,                   // http://eslint.org/docs/rules/no-undef
@@ -43,9 +40,6 @@
     }],
     "no-use-before-define": 2,       // http://eslint.org/docs/rules/no-use-before-define
 
-    /**
-     * Possible errors
-     */
     "no-cond-assign": [2, "always"], // http://eslint.org/docs/rules/no-cond-assign
     "no-console": 1,                 // http://eslint.org/docs/rules/no-console
     "no-debugger": 1,                // http://eslint.org/docs/rules/no-debugger
@@ -158,7 +152,7 @@
     }],
     "keyword-spacing": 2,       // http://eslint.org/docs/rules/space-after-keywords
     "space-before-blocks": 2,        // http://eslint.org/docs/rules/space-before-blocks
-    "space-before-function-paren": [2, "never"], // http://eslint.org/docs/rules/space-before-function-paren
+    "space-before-function-paren": [2, "asyncArrow"], // http://eslint.org/docs/rules/space-before-function-paren
     "space-infix-ops": 2,            // http://eslint.org/docs/rules/space-infix-ops
     "spaced-comment": [2, "always",  {// http://eslint.org/docs/rules/spaced-comment
       "exceptions": ["-", "+"],
