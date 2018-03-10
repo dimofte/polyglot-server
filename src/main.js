@@ -1,4 +1,4 @@
 const { consoleError } = require('./log');
-const { startServer } = require('../src/main');
+const { startServer } = require('./express');
 
 startServer().catch(consoleError);

@@ -14,7 +14,6 @@ gulp.task('default', ['server:start', 'js:watch', 'css:watch', 'html:watch'], fu
   gulp.watch(serverFiles).on('change', restart);
 });
 
-
 gulp.task('server', ['server:start'], function() {
   function restart(file) {
     server.changed(function(error) {
@@ -25,13 +24,27 @@ gulp.task('server', ['server:start'], function() {
 });
 
 gulp.task('server:start', function() {
-  server.listen({ path: './src/main.js' }, function(err) {
-    if (err) {
-      return;
+  process.env.VERBOSE = process.argv.includes('--verbose');
+  console.log(`verbose in gulp, ${process.env.VERBOSE}`);
+
+  server.listen(
+    {
+      path: './src/main.js',
+      env: {
+        NODE_ENV: 'development',
+        VERBOSE: process.argv.includes('--verbose')
+      }
+    },
+    function(err) {
+      if (err) {
+        return;
+      }
+      livereload.listen;
     }
-    livereload.listen;
-  });
+  );
 });
+
+// legacy code below... it might be handy in the future
 
 gulp.task('html', function() {
   gulp.src('./public/*.html').pipe(livereload());

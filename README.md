@@ -14,6 +14,8 @@ yarn start
 ```
 This starts a `gulp` development server which _hot-reloads the code_ :rocket:
 
+You can add `--verbose` to make the server print what it does.
+
 The server ([`src/main.js`](./src/main.js)) is an express instance.
 
 ### Making requests
@@ -22,8 +24,8 @@ http://localhost:3000/python).
 
 The request body must be plain test. The result is also plain text, a stringified JSON.
 
-The returned result is whatever was printed, each `print` call generating an element in an array. 
-For example, if the request body is:  
+The returned result is whatever was printed, each `print` call generating an element in an array.
+For example, if the request body is:
 ```
 x = 1
 while x < 5:
@@ -44,4 +46,4 @@ For more details, see the [tests](./tests/rest.spec.js)
 At the current iteration, the script executer has access to all resources of the user
 that runs the node server :birthday:
 
-*So use with caution!!!* 
+*So use with caution!!!*

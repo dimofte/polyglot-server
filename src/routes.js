@@ -1,5 +1,5 @@
 const { runPythonCode } = require('./pythonVM');
-const { consoleLog } = require('./log');
+const { consoleLog, consoleError } = require('./log');
 
 const appRouter = async app => {
   app.get('/', (req, res) => {
@@ -18,11 +18,13 @@ const appRouter = async app => {
     } catch (err) {
       const { message } = err;
 
-      // consoleError(message);
-      res.status(400).send(`${err.name}:  ${
-        // disabled // remove the file name from the error message
-        message // .replace('File "<stdin>",', '')
-      }`);
+      consoleError(`Error:\n${message}`);
+      res.status(400).send(
+        `${err.name}:  ${
+          // disabled // remove the file name from the error message
+          message // .replace('File "<stdin>",', '')
+        }`
+      );
     }
   });
 };

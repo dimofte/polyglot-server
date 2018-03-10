@@ -1,4 +1,6 @@
+/* globals Promise: false */
 const { Docker } = require('node-docker-api');
+const { consoleLog } = require('./log');
 
 const CONTAINER_NAME = 'python-runner';
 
@@ -28,7 +30,7 @@ async function runPythonCode(code) {
     container = await docker.container.get(CONTAINER_NAME);
     await container.start();
   } catch (e) {
-    console.log('Creating container', CONTAINER_NAME);
+    consoleLog('Creating container', CONTAINER_NAME);
     container = await docker.container.create({
       Image: 'python:slim',
       Cmd: ['/bin/bash', '-c', 'tail -f /var/log/dmesg'],
@@ -49,7 +51,6 @@ async function runPythonCode(code) {
     result = [...result, ...res];
   });
   await container.kill();
-  console.log({ result });
   if ((await exec.status()).data.ExitCode) {
     // only code 0 means success
     throw new Error(result.join('\n'));
@@ -61,7 +62,7 @@ async function runPythonCode(code) {
 async function ensureDockerImage() {
   // Pull docker image if necessary (python:slim)
   const imageStream = await docker.image.create({}, { fromImage: 'python:3', tag: 'slim' });
-  await promisifyStream(imageStream, console.log);
+  await promisifyStream(imageStream, consoleLog);
 }
 
 module.exports = {
