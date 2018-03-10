@@ -4,7 +4,7 @@
   "description": "A virtual machine to run arbitrary python code",
   "main": "src/main.js",
   "scripts": {
-    "test": "mocha --timeout 10000 --exit \"tests/**/taskManager.spec.js\"",
+    "test": "mocha --timeout 10000 --exit \"tests/**/*.spec.js\"",
     "test:watch": "yarn test --watch",
     "start": "gulp server"
   },

@@ -20,7 +20,7 @@ describe('Task manager', async () => {
     const taskManager = new TaskManager(2);
     const id1 = await taskManager.queue();
     expect(!!taskManager.tasks.find(({ id }) => id === id1)).to.be.true;
-    await taskManager.markDone(id1);
+    taskManager.markDone(id1);
     expect(!!taskManager.tasks.find(({ id }) => id === id1)).to.be.false;
   });
 

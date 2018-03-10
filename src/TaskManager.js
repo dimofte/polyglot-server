@@ -23,7 +23,7 @@ class TaskManager {
     });
   }
 
-  async markDone(id) {
+  markDone(id) {
     this.tasks = this.tasks.filter(task => task.id !== id);
     const { tasks, limit } = this;
     if (tasks.length === limit) {
