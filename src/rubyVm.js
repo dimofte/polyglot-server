@@ -2,13 +2,13 @@
 const { Docker } = require('node-docker-api');
 const { consoleLog } = require('./log');
 
-const CONTAINER_NAME = 'python-runner';
+const CONTAINER_NAME = 'ruby-runner';
 
 const promisifyStream = (stream, handler) =>
   new Promise((resolve, reject) => {
     // the result of the code's execution has some extra-fluf and we need to remove it
     // FIXME: the following buffer processing is kinda fragile
-    // (depends too much on the python interpreter)
+    // (depends too much on the ruby interpreter)
     stream.on('data', data =>
       handler(
         data
@@ -24,7 +24,7 @@ const promisifyStream = (stream, handler) =>
 
 const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
-async function runPythonCode(code) {
+async function runRubyCode(code) {
   let container;
   try {
     container = await docker.container.get(CONTAINER_NAME);
@@ -32,8 +32,9 @@ async function runPythonCode(code) {
   } catch (e) {
     consoleLog('Creating container', CONTAINER_NAME);
     container = await docker.container.create({
-      Image: 'python:slim',
-      Cmd: ['/bin/bash', '-c', 'tail -f /var/log/dmesg'],
+      Image: 'ruby:slim',
+      // Image: 'iron/ruby',
+      Cmd: ['/bin/bash', '-c', 'bundle install'],
       name: CONTAINER_NAME
     });
     await container.start();
@@ -42,7 +43,7 @@ async function runPythonCode(code) {
   const exec = await container.exec.create({
     AttachStdout: true,
     AttachStderr: true,
-    Cmd: ['/bin/bash', '-c', `echo "${code}" | python`]
+    Cmd: ['/bin/bash', '-c', `echo "${code}" | ruby`]
   });
 
   let result = [];
@@ -53,19 +54,21 @@ async function runPythonCode(code) {
   await container.kill();
   if ((await exec.status()).data.ExitCode) {
     // only code 0 means success
-    throw new Error(result.join('\n'));
+    throw new Error(result.join(''));
+    // throw new Error(result);
   }
   await container.delete();
   return result;
 }
 
-async function ensurePythonDockerImage() {
-  // Pull docker image if necessary (python:slim)
-  const imageStream = await docker.image.create({}, { fromImage: 'python:3', tag: 'slim' });
+async function ensureRubyDockerImage() {
+  // Pull docker image if necessary (ruby:slim)
+  const imageStream = await docker.image.create({}, { fromImage: 'ruby:2.5', tag: 'slim' });
+  // const imageStream = await docker.image.create({}, { fromImage: 'iron/ruby', tag: 'dev' });
   await promisifyStream(imageStream, consoleLog);
 }
 
 module.exports = {
-  runPythonCode,
-  ensurePythonDockerImage
+  runRubyCode,
+  ensureRubyDockerImage
 };

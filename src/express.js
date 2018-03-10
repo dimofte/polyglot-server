@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const { consoleLog } = require('./log');
-const { ensureDockerImage } = require('./pythonVm');
+const { ensurePythonDockerImage } = require('./pythonVm');
+const { ensureRubyDockerImage } = require('./rubyVm');
 
 const app = express();
 const PORT = 3000;
@@ -14,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let expressServer;
 
 async function startServer() {
-  await ensureDockerImage();
+  await ensurePythonDockerImage();
+  await ensureRubyDockerImage();
   await routes(app);
   expressServer = app.listen(PORT, HOST, () => {
     consoleLog('App running on port ', expressServer.address().port);

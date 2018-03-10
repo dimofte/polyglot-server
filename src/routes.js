@@ -1,4 +1,5 @@
 const { runPythonCode } = require('./pythonVM');
+const { runRubyCode } = require('./rubyVm');
 const { consoleLog, consoleError } = require('./log');
 const TaskManager = require('../src/TaskManager');
 
@@ -13,7 +14,7 @@ const appRouter = async app => {
 
   app.post('/python', async (req, res) => {
     const code = req.body;
-    consoleLog('Received request:\n', `${code}`);
+    consoleLog('Python request:\n', `${code}`);
     try {
       const taskId = await taskManager.queue();
       const result = await runPythonCode(code);
@@ -29,6 +30,22 @@ const appRouter = async app => {
           message // .replace('File "<stdin>",', '')
         }`
       );
+    }
+  });
+
+  app.post('/ruby', async (req, res) => {
+    const code = req.body;
+    consoleLog('Ruby request:\n', `${code}`);
+    try {
+      const taskId = await taskManager.queue();
+      const result = await runRubyCode(code);
+      taskManager.markDone(taskId);
+      consoleLog('Result:', result);
+      res.status(200).send(JSON.stringify(result));
+    } catch (err) {
+      const { message } = err;
+      consoleError(`Error:\n${message}`);
+      res.status(400).send(`${err.name}:  ${message}`);
     }
   });
 };
