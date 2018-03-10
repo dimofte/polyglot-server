@@ -4,7 +4,7 @@ const { consoleLog } = require('./log');
 const appRouter = async app => {
   app.get('/', (req, res) => {
     res.status(200).send(`
-    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 9; nine + 1'
+    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 9; print(nine + 1)'
     `);
   });
 
@@ -20,8 +20,8 @@ const appRouter = async app => {
 
       // consoleError(message);
       res.status(400).send(`${err.name}:  ${
-        // remove the file name from the error message
-        message.replace('File "<stdin>",', '')
+        // disabled // remove the file name from the error message
+        message // .replace('File "<stdin>",', '')
       }`);
     }
   });

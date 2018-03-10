@@ -1,6 +1,6 @@
 const { Docker } = require('node-docker-api');
 
-const CONTAINER = 'python-runner';
+const CONTAINER_NAME = 'python-runner';
 
 const promisifyStream = (stream, handler) =>
   new Promise((resolve, reject) => {
@@ -25,14 +25,14 @@ const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 async function runPythonCode(code) {
   let container;
   try {
-    container = await docker.container.get(CONTAINER);
+    container = await docker.container.get(CONTAINER_NAME);
     await container.start();
   } catch (e) {
-    console.log('Creating container', CONTAINER);
+    console.log('Creating container', CONTAINER_NAME);
     container = await docker.container.create({
       Image: 'python:slim',
       Cmd: ['/bin/bash', '-c', 'tail -f /var/log/dmesg'],
-      name: CONTAINER
+      name: CONTAINER_NAME
     });
     await container.start();
   }
