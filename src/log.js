@@ -1,9 +1,10 @@
 /**
  * @file a poor man's way to hide messages while in 'test' env,
  * while showing them in development env
+ * TODO: better ways do exist
  */
-// TODO: better ways do exist
+const isVerbose = process.env.VERBOSE === 'true';
 module.exports = {
-  consoleLog: process.env.VERBOSE ? console.log : () => {},
-  consoleError: process.env.VERBOSE ? console.error : () => {}
+  consoleLog: isVerbose ? console.log : () => {},
+  consoleError: isVerbose ? console.error : () => {}
 };
