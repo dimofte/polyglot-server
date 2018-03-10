@@ -21,7 +21,7 @@ describe('POST python', () => {
   });
   after(async () => stopServer());
 
-  it('it should error for requests without body', done => {
+  it('should error for requests without body', done => {
     chaiServer.post(path).end((err, res) => {
       expect(err).not.to.be.null;
       expect(res).to.have.status(400);
@@ -30,7 +30,7 @@ describe('POST python', () => {
     });
   });
 
-  it('it should return anything that was printed', done => {
+  it('should return anything that was printed', done => {
     // identation is important in python!
     const payload = `
 x = 1
@@ -50,7 +50,7 @@ while x < 5:
       });
   });
 
-  it('it should report "not defined" errors', done => {
+  it('should report "not defined" errors', done => {
     // ExecutionError:  foo is not defined
     const payload = 'foo()';
     const errorMessage = "NameError: name 'foo' is not defined";
@@ -66,7 +66,7 @@ while x < 5:
       });
   });
 
-  it('it should report syntax errors', done => {
+  it('should report syntax errors', done => {
     const payload = '^$%^';
     const errorMessage = 'SyntaxError: invalid syntax';
     chaiServer
@@ -84,7 +84,7 @@ while x < 5:
 
   // TODO: timebox script, cut access to filesystem etc
 
-  //   it('it should not provide write access to the filesystem', done => {
+  //   it('should not provide write access to the filesystem', done => {
   //     const payload = `
   // file = open("testfile.txt", "w")
   // file.write("This is a test")
