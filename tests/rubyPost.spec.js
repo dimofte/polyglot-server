@@ -33,7 +33,7 @@ describe('POST ruby', () => {
 x = 1
 puts x
 puts x + 1
-      `;
+`;
     chaiServer
       .post(path)
       .set('content-type', 'text/plain')
@@ -46,30 +46,49 @@ puts x + 1
       });
   });
 
-  it('should report various errors', done => {
+  it('should report errors: undefined method', done => {
     chaiServer
       .post(path)
       .set('content-type', 'text/plain')
-      .send('foo()')
+      .send('fooBar()')
       .end((err, res) => {
         expect(err).not.to.be.null;
-        // expect(res).to.have.status(400);
+        expect(res).to.have.status(400);
         expect(res.text.includes('NoMethodError')).to.be.true;
         done();
       });
+  });
 
-    chaiServer
+    it('should report errors: syntax', done => {
+        chaiServer
       .post(path)
       .set('content-type', 'text/plain')
-      .send('^$%^')
+      .send('****')
       .end((err, res) => {
         expect(err).not.to.be.null;
-        // expect(res).to.have.status(400);
-        // console.log(res.text );
+        expect(res).to.have.status(400);
         expect(res.text.includes('syntax error')).to.be.true;
         done();
       });
-    });
+  });
 
-  // TODO: timebox script
+  it('should be time-boxed', done => {
+    const payload = `
+loop do
+  puts 'loop'
+end
+`;
+    const errorMessage = 'Time limit reached';
+    chaiServer
+      .post(path)
+      .set('content-type', 'text/plain')
+      .send(payload)
+      .end((err, res) => {
+        expect(err).not.to.be.null;
+        expect(res).to.have.status(400);
+        console.log(res.text, res.text.includes(errorMessage))
+        expect(res.text.includes(errorMessage)).to.be.true;
+        done();
+      });
+  });
 });

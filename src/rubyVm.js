@@ -3,6 +3,7 @@ const { Docker } = require('node-docker-api');
 const { consoleLog } = require('./log');
 
 const CONTAINER_NAME = 'ruby-runner';
+const TIME_LIMIT = 5000;
 
 const promisifyStream = (stream, handler) =>
   new Promise((resolve, reject) => {
@@ -26,20 +27,12 @@ const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
 async function runRubyCode(code) {
   let container;
-  try {
-    container = await docker.container.get(CONTAINER_NAME);
-    await container.start();
-  } catch (e) {
-    consoleLog('Creating container', CONTAINER_NAME);
-    container = await docker.container.create({
-      Image: 'ruby:slim',
-      // Image: 'iron/ruby',
-      Cmd: ['/bin/bash', '-c', 'bundle install'],
-      name: CONTAINER_NAME
-    });
-    await container.start();
-  }
-  // await container.start();
+  container = await docker.container.create({
+    Image: 'ruby:slim',
+    // Image: 'iron/ruby',
+    Cmd: ['/bin/bash', '-c', 'bundle install']
+  });
+  await container.start();
   const exec = await container.exec.create({
     AttachStdout: true,
     AttachStderr: true,
@@ -47,17 +40,34 @@ async function runRubyCode(code) {
   });
 
   let result = [];
+
+  const killAndDelete = async () => {
+    await container.kill();
+    await container.delete();
+  };
+
+  setTimeout(() => {
+    killAndDelete().catch(() => {});
+  }, TIME_LIMIT);
+
+  // If the execution is stopped because of the time limit, we'll encounter an error
+  // Otherwise, we won't, we must inspect the exit code to check if the script was successful
   const stream = await exec.start({ Detach: false });
-  await promisifyStream(stream, res => {
-    result = [...result, ...res];
-  });
-  await container.kill();
-  if ((await exec.status()).data.ExitCode) {
-    // only code 0 means success
-    throw new Error(result.join(''));
-    // throw new Error(result);
+  let execStatus;
+  try {
+    await promisifyStream(stream, res => {
+      result = [...result, ...res];
+    });
+    execStatus = await exec.status();
+    await killAndDelete();
+  } catch (e) {
+    throw new Error(`Time limit reached (${TIME_LIMIT}ms)`);
   }
-  await container.delete();
+  if (execStatus.data.ExitCode) {
+    // only code 0 means success
+    throw new Error(result.join('\n'));
+  }
+
   return result;
 }
 
