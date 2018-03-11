@@ -1,8 +1,9 @@
 /* globals Promise: false */
 const { Docker } = require('node-docker-api');
-const { consoleLog } = require('./log');
+const { consoleLog, consoleError } = require('./log');
 
 const CONTAINER_NAME = 'python-runner';
+const TIME_LIMIT = 5000;
 
 const promisifyStream = (stream, handler) =>
   new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@ async function runPythonCode(code) {
     container = await docker.container.get(CONTAINER_NAME);
     await container.start();
   } catch (e) {
-    consoleLog('Creating container', CONTAINER_NAME);
+    // consoleLog('Creating container', CONTAINER_NAME);
     container = await docker.container.create({
       Image: 'python:slim',
       Cmd: ['/bin/bash', '-c', 'tail -f /var/log/dmesg'],
@@ -46,16 +47,34 @@ async function runPythonCode(code) {
   });
 
   let result = [];
+
+  const killAndDelete = async () => {
+    await container.kill();
+    await container.delete();
+  };
+
+  setTimeout(() => {
+    killAndDelete().catch(() => {});
+  }, TIME_LIMIT);
+
+  // If the execution is stopped because of the time limit, we'll encounter an error
+  // Otherwise, we won't, we must inspect the exit code to check if the script was successful
   const stream = await exec.start({ Detach: false });
-  await promisifyStream(stream, res => {
-    result = [...result, ...res];
-  });
-  await container.kill();
-  if ((await exec.status()).data.ExitCode) {
+  let execStatus;
+  try {
+    await promisifyStream(stream, res => {
+      result = [...result, ...res];
+    });
+    execStatus = await exec.status();
+    await killAndDelete();
+  } catch (e) {
+    throw new Error(`Time limit reached (${TIME_LIMIT}ms)`);
+  }
+  if (execStatus.data.ExitCode) {
     // only code 0 means success
     throw new Error(result.join('\n'));
   }
-  await container.delete();
+
   return result;
 }
 

@@ -60,7 +60,7 @@ while x < 5:
       .send(payload)
       .end((err, res) => {
         expect(err).not.to.be.null;
-        // expect(res).to.have.status(400);
+        expect(res).to.have.status(400);
         expect(res.text.includes(errorMessage)).to.be.true;
         done();
       });
@@ -75,12 +75,27 @@ while x < 5:
       .send(payload)
       .end((err, res) => {
         expect(err).not.to.be.null;
-        // expect(res).to.have.status(400);
-        // console.log(res.text );
+        expect(res).to.have.status(400);
         expect(res.text.includes(errorMessage)).to.be.true;
         done();
       });
   });
 
-  // TODO: timebox script
+  it('should be time-boxed', done => {
+    const payload = `
+while 1 < 2:
+    x = 1
+    `;
+    const errorMessage = 'Time limit reached';
+    chaiServer
+      .post(path)
+      .set('content-type', 'text/plain')
+      .send(payload)
+      .end((err, res) => {
+        expect(err).not.to.be.null;
+        expect(res).to.have.status(400);
+        expect(res.text.includes(errorMessage)).to.be.true;
+        done();
+      });
+  });
 });
