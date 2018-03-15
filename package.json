@@ -1,7 +1,7 @@
 {
   "name": "vm-python",
   "version": "0.0.4",
-  "description": "A virtual machine to run arbitrary python code",
+  "description": "A virtual machine to run arbitrary code",
   "main": "src/main.js",
   "scripts": {
     "test": "mocha --timeout 10000 --exit \"tests/**/*.spec.js\"",

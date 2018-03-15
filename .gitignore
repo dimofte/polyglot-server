@@ -28,5 +28,5 @@ local-config.js
 
 process.json
 .idea
-
+.vscode
 /output

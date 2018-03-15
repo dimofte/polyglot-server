@@ -1,3 +1,4 @@
+
 # Simple virtual machine for python
 
 ## Installation
@@ -40,6 +41,8 @@ For more details, see the [tests](./tests/rest.spec.js)
 
 ## Tests
 `yarn test` or `yarn test:watch`
+
+To see the output, set environment variable `VERBOSE`, i.e. `VERBOSE=true yarn test`
 
 ## Security concerns :warning:
 
