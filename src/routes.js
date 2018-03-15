@@ -1,5 +1,5 @@
-const { runPythonCode } = require('./pythonVM');
-const { runRubyCode } = require('./rubyVm');
+const PythonContainer = require('./containers/PythonContainer');
+const RubyContainer = require('./containers/RubyContainer');
 const { consoleLog, consoleError } = require('./log');
 const TaskManager = require('../src/TaskManager');
 
@@ -8,7 +8,7 @@ const taskManager = new TaskManager(5);
 const appRouter = async app => {
   app.get('/', (req, res) => {
     res.status(200).send(`
-    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 9; print(nine + 1)'
+    Welcome to our JS virtual machine. Try to POST on /python a text like 'nine = 99; print(nine + 1)'
     `);
   });
 
@@ -17,7 +17,7 @@ const appRouter = async app => {
     consoleLog('Python request:\n', `${code}`);
     try {
       const taskId = await taskManager.queue();
-      const result = await runPythonCode(code);
+      const result = await new PythonContainer().run(code);
       taskManager.markDone(taskId);
       consoleLog('Result:', result);
       res.status(200).send(JSON.stringify(result));
@@ -38,7 +38,7 @@ const appRouter = async app => {
     consoleLog('Ruby request:\n', `${code}`);
     try {
       const taskId = await taskManager.queue();
-      const result = await runRubyCode(code);
+      const result = await new RubyContainer().run(code);
       taskManager.markDone(taskId);
       consoleLog('Result:', result);
       res.status(200).send(JSON.stringify(result));

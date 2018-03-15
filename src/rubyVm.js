@@ -26,8 +26,7 @@ const promisifyStream = (stream, handler) =>
 const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
 async function runRubyCode(code) {
-  let container;
-  container = await docker.container.create({
+  const container = await docker.container.create({
     Image: 'ruby:slim',
     // Image: 'iron/ruby',
     Cmd: ['/bin/bash', '-c', 'bundle install']
