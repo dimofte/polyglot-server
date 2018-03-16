@@ -16,7 +16,7 @@ class PythonContainer extends AbstractContainer {
     this.exec = await this.container.exec.create({
       AttachStdout: true,
       AttachStderr: true,
-      Cmd: ['/bin/bash', '-c', `echo "${code}" | python`]
+      Cmd: ['/bin/bash', '-c', `echo '${code}' | python`]
     });
   }
 
