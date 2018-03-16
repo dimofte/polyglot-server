@@ -62,7 +62,7 @@ _However, restrictions can set on the Docker server itself!_
 Once this number has been reached, a `TaskManager` will start queueing them.
 
 ## Extending with new languages
-Currently there's support for _Ruby_ and _Python_, but extending should be
-as easy as adding docker images and using them as in
+Currently there's support for _Ruby_, _Python_ and _PHP_, but extending should be
+as easy as adding docker images in [express.js](./src/express.js#L17), containers as in
 [PythonContainer.js](./src/containers/PythonContainer.js)
-and plugging them in the express server in [routes.js](./src/routes.js)
+and plugging them in the HTTP server in [routes.js](./src/routes.js#L17)

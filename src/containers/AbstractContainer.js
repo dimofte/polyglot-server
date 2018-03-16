@@ -18,7 +18,7 @@ class AbstractContainer {
             .toString()
             .substr(8)
             .split('\n')
-            .slice(0, -1)
+            .filter(line => line) // skip empty lines
         )
       );
       stream.on('end', resolve);
@@ -63,7 +63,7 @@ class AbstractContainer {
     const stream = await this.exec.start({ Detach: false });
     let execStatus;
     try {
-      await AbstractContainer.promisifyStream(stream, res => {
+      await this.constructor.promisifyStream(stream, res => {
         result = [...result, ...res];
       });
       execStatus = await this.exec.status();

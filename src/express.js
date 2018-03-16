@@ -4,6 +4,7 @@ const routes = require('./routes');
 const { consoleLog } = require('./log');
 const PythonContainer = require('./containers/PythonContainer');
 const RubyContainer = require('./containers/RubyContainer');
+const PhpContainer = require('./containers/PhpContainer');
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
@@ -15,6 +16,7 @@ async function startServer() {
 
   await PythonContainer.ensureImage();
   await RubyContainer.ensureImage();
+  await PhpContainer.ensureImage();
 
   await routes(app);
 

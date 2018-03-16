@@ -1,5 +1,6 @@
 const PythonContainer = require('./containers/PythonContainer');
 const RubyContainer = require('./containers/RubyContainer');
+const PhpContainer = require('./containers/PhpContainer');
 const { consoleLog, consoleError } = require('./log');
 const TaskManager = require('../src/TaskManager');
 
@@ -13,41 +14,36 @@ const appRouter = async app => {
     `);
   });
 
-  app.post('/python', async (req, res) => {
-    const code = req.body;
-    consoleLog('Python request:\n', `${code}`);
-    try {
-      const taskId = await taskManager.queue();
-      const result = await new PythonContainer().run(code);
-      taskManager.markDone(taskId);
-      consoleLog('Result:', result);
-      res.status(200).send(JSON.stringify(result));
-    } catch (err) {
-      const { message } = err;
-      consoleError(`Error:\n${message}`);
-      res.status(400).send(
-        `${err.name}:  ${
-          // disabled // remove the file name from the error message
-          message // .replace('File "<stdin>",', '')
-        }`
-      );
-    }
-  });
+  const containerDefinitions = [{
+    name: 'Python',
+    path: '/python',
+    constructor: PythonContainer,
+  }, {
+    name: 'Ruby',
+    path: '/ruby',
+    constructor: RubyContainer,
+  }, {
+    name: 'PHP',
+    path: '/php',
+    constructor: PhpContainer,
+  }];
 
-  app.post('/ruby', async (req, res) => {
-    const code = req.body;
-    consoleLog('Ruby request:\n', `${code}`);
-    try {
-      const taskId = await taskManager.queue();
-      const result = await new RubyContainer().run(code);
-      taskManager.markDone(taskId);
-      consoleLog('Result:', result);
-      res.status(200).send(JSON.stringify(result));
-    } catch (err) {
-      const { message } = err;
-      consoleError(`Error:\n${message}`);
-      res.status(400).send(`${err.name}:  ${message}`);
-    }
+  containerDefinitions.forEach(containerProps => {
+    app.post(containerProps.path, async (req, res) => {
+      const code = req.body;
+      consoleLog(`${containerProps.name} request:\n${code}`);
+      try {
+        const taskId = await taskManager.queue();
+        const result = await new (containerProps.constructor)().run(code);
+        taskManager.markDone(taskId);
+        consoleLog('Result:', result);
+        res.status(200).send(JSON.stringify(result));
+      } catch (err) {
+        const { message } = err;
+        consoleError(`Error:\n${message}`);
+        res.status(400).send(`${err.name}:  ${message}`);
+      }
+    });
   });
 };
 
