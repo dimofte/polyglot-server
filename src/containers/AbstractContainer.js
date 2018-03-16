@@ -12,7 +12,6 @@ class AbstractContainer {
     return new Promise((resolve, reject) => {
       // the result of the code's execution has some extra-fluf and we need to remove it
       // FIXME: the following buffer processing is kinda fragile
-      // (depends too much on the ruby interpreter)
       stream.on('data', data =>
         handler(
           data

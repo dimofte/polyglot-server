@@ -3,7 +3,8 @@ const RubyContainer = require('./containers/RubyContainer');
 const { consoleLog, consoleError } = require('./log');
 const TaskManager = require('../src/TaskManager');
 
-const taskManager = new TaskManager(5);
+const MAX_NUMBER_OF_CONCURRENT_TASKS = 5;
+const taskManager = new TaskManager(MAX_NUMBER_OF_CONCURRENT_TASKS);
 
 const appRouter = async app => {
   app.get('/', (req, res) => {
