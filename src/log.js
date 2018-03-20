@@ -1,6 +1,5 @@
 /**
- * @file a poor man's way to hide messages while in 'test' env,
- * while showing them in development env
+ * @file a poor man's way to only log messages if the server was started in verbose mode
  * TODO: better ways do exist
  */
 const isVerbose = process.env.VERBOSE === 'true';

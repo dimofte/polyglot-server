@@ -61,7 +61,7 @@ Currently, after 5 seconds an error (http code `400`) is returned.
 _However, restrictions can set on the Docker server itself!_
 
 :vertical_traffic_light: There's a limited number of tasks executed concurrently (_5_ tasks).
-Once this number has been reached, a `TaskManager` will start queueing them.
+Once this number has been reached, a `TaskManager` will start enqueueing them.
 
 ## Extending with new languages
 Currently there's support for _Ruby_, _Python_ and _PHP_, but extending should be
