@@ -4,13 +4,18 @@
 This is an HTTP server (express.js) which executes POST-ed code,
 in various languages.
 
-## Installation
+:warning: Created as part of a [Modex](https://modex.tech/) hackathon, it hasn't been used in production yet (afaik).
+
+## Usage
+
+__A Docker server must be running__
+
+### Installation
 ```bash
 yarn
 ```
-You can of course use `npm` (`npm i`)
+(or `npm i`)
 
-## Usage
 ### Development server
 ```bash
 yarn start
@@ -44,7 +49,7 @@ will produce this response body :
 For more details, see the [tests](./tests/rest.spec.js)
 
 ## Tests
-Prerequisite: __A Docker server must be running!__
+Prerequisite: __The Docker server must be running!__
 
 `yarn test` or `yarn test:watch`
 
